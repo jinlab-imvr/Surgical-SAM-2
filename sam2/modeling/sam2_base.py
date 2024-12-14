@@ -578,15 +578,15 @@ class SAM2Base(torch.nn.Module):
                 )
                 to_cat_memory_pos_embed.append(maskmem_enc)
 
-            # remove the memory with the lowest cosine similarity to the last frame
+            # remove 'num_remove' memory frames most similar with the last frame
             num_remove = 2
             if len(to_cat_memory) >= self.num_maskmem:
                 cos_sim = {}
                 last_vision_feature = to_cat_memory[-1]
                 for i in range(1, len(to_cat_memory) - 1):  # last index should be preserved
                     cos_sim[i] = torch.sum(torch.cosine_similarity(to_cat_memory[i], last_vision_feature, dim=-1))
-                cos_sim = list(sorted(cos_sim.items(), key=lambda x: x[1], reverse=True))
-                delete_index = sorted([cos_sim[i][0] for i in range(num_remove)], reverse=True)
+                cos_sim = list(sorted(cos_sim.items(), key=lambda x: x[1], reverse=True))  # the ranking is from large to small
+                delete_index = sorted([cos_sim[i][0] for i in range(num_remove)], reverse=True)  # delete 'num_remove' frames with larger cos_sim
                 for i in delete_index:
                     to_cat_memory.pop(i)
                     to_cat_memory_pos_embed.pop(i)
