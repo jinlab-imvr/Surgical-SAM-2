@@ -2,6 +2,8 @@
 
 Official implementation for SurgSAM2, an innovative model that leverages the power of the Segment Anything Model 2 (SAM2), integrating it with an efficient frame pruning mechanism for real-time surgical video segmentation. Paper in [arxiv](https://arxiv.org/abs/2408.07931).
 
+## Overview
+
 We introduce Surgical SAM 2 (SurgSAM-2), an innovative model that leverages the power of the Segment Anything Model 2 (#SAM2), integrating it with an efficient frame pruning mechanism for real-time surgical video segmentation. The proposed SurgSAM-2
 
 - dramatically reduces memory usage and computational cost of SAM2 for real-time clinical application;
@@ -9,21 +11,74 @@ We introduce Surgical SAM 2 (SurgSAM-2), an innovative model that leverages the 
 
 ![architecture](./assets/architecture.png)
 
+## Dataset Acquisition and Preprocessing
+
+### Data Download
+
+1. Please download the training and validation sets used in our experiments:
+   1. [VOS-Endovis17](https://drive.google.com/file/d/1tw7KzpXqOC3HsjsUknro4MOqQ2Nr3vD1/view?usp=drive_link)
+   2. [VOS-Endovis18](https://drive.google.com/file/d/1Vod5jKoC8CAEqlYdiXZ2HMexP9IFXbGp/view?usp=drive_link)
+2. The original image data can be obtained from the official websites:
+   1. [Endovis17 Official Dataset](https://endovissub2017-roboticinstrumentsegmentation.grand-challenge.org/)
+   2. [Endovis18 Official Dataset](http://endovissub2018-roboticscenesegmentation.grand-challenge.org/)
+
+### Data Preprocessing
+
+Follow the data preprocessing instructions provided in the [ISINet](https://github.com/BCV-Uniandes/ISINet) repository. 
+
+### Dataset Structure
+
+After downloading, organize your data according to the following structure:
+
+```
+project_root/
+└── datasets/
+    └── VOS-Endovis18/
+        └──  train/
+        	└──  JPEGImages/
+        	└──  Annotations/
+        └──  valid/
+        	└──  JPEGImages/
+        	└──  Annotations/
+        	└──  VOS/
+```
+
 ## Training
 
-The source code is coming soon
+To train the model, run:
 
-## Evaluation data and pretrained weighted
+```
+CUDA_VISIBLE_DEVICES=0 python training/train.py --config configs/sam2.1_training/sam2.1_hiera_s_endovis18_instrument
+```
 
-The demo data from Endovis 2018 could be downloaded from [2018 demo data](https://drive.google.com/file/d/1RG9DIGXFQwXckYpaTLEUyxYq4DexgBOY/view?usp=sharing). Please put the data to construct the data construction as: project_root/datasets/endovis18/images/seq_2/...
+## Evaluation
 
-The pretrained weighted could be downloaded from [sam2_hiera_s_endo18](https://drive.google.com/file/d/102AsbwpntPfUV96ANO2AWe7L6feskYnM/view?usp=sharing). Please put the weight to construct project_root/model_weights/sam2_hiera_s_endo18.pth
+Download the pretrained weights from [sam2.1_hiera_s_endo18](https://drive.google.com/file/d/1DyrrLKst1ZQwkgKM7BWCCwLxSXAgOcMI/view?usp=drive_link). Place the file at `project_root/model_weights/sam2.1_hiera_s_endo18.pth`.
+
+```
+python tools/vos_inference.py --sam2_cfg configs/sam2.1/sam2.1_hiera_s.yaml --sam2_checkpoint ./model_weights/sam2.1_hiera_s_endo18.pth --output_mask_dir ./results/sam2.1/endovis_2018/instrument --input_mask_dir ./datasets/VOS-Endovis18/valid/VOS/Annotations_vos_instrument --base_video_dir ./datasets/VOS-Endovis18/valid/JPEGImages --gt_root ./datasets/VOS-Endovis18/valid/Annotations --gpu_id 0
+```
+
+## Demo
+
+Demo data from Endovis 2018 can be downloaded from  [2018 demo data](https://drive.google.com/file/d/1RG9DIGXFQwXckYpaTLEUyxYq4DexgBOY/view?usp=sharing). 
+
+After downloading, arrange the files according to the following structure:
+
+```
+project_root/
+└── datasets/
+    └── endovis18/
+        └── images/
+            └── seq_2/
+                └── ...
+```
 
 ## Acknowledgement
 
-This model was trained with the datasets from Endovis 2017, Endovis 2018. If you need to use the data, please apply for the usage from their website [Endovis 2017](https://endovissub2017-roboticinstrumentsegmentation.grand-challenge.org/Downloads/) and [Endovis 2018](https://endovissub2018-roboticscenesegmentation.grand-challenge.org/Downloads/).
+This research utilizes datasets from [Endovis 2017](https://endovissub2017-roboticinstrumentsegmentation.grand-challenge.org/Downloads/) and [Endovis 2018](https://endovissub2018-roboticscenesegmentation.grand-challenge.org/Downloads/).. If you wish to use these datasets, please request access through their respective official websites.
 
-This code was adapted from [segment anything 2](https://github.com/facebookresearch/segment-anything-2). We are grateful for their excellent code and contribution to video segmentation.
+Our implementation builds upon the [segment anything 2](https://github.com/facebookresearch/segment-anything-2) framework. We extend our sincere appreciation to the authors for their outstanding work and significant contributions to the field of video segmentation.
 
 ## Citation
 
