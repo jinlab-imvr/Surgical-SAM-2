@@ -130,7 +130,7 @@ class PNGRawDataset(VOSRawDataset):
         video_mask_root = os.path.join(self.gt_folder, video_name)
 
         if self.is_palette:
-            segment_loader = PalettisedPNGSegmentLoader(video_mask_root)
+            segment_loader = PalettisedPNGSegmentLoader(video_mask_root, self.used_object_ids)
         else:
             segment_loader = MultiplePNGSegmentLoader(
                 video_mask_root, self.single_object_mode

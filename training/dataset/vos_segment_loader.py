@@ -101,12 +101,13 @@ class JSONSegmentLoader:
 
 
 class PalettisedPNGSegmentLoader:
-    def __init__(self, video_png_root):
+    def __init__(self, video_png_root, used_object_ids=None):
         """
         SegmentLoader for datasets with masks stored as palettised PNGs.
         video_png_root: the folder contains all the masks stored in png
         """
         self.video_png_root = video_png_root
+        self.used_object_ids = used_object_ids
         # build a mapping from frame id to their PNG mask path
         # note that in some datasets, the PNG paths could have more
         # than 5 digits, e.g. "00000000.png" instead of "00000.png"
@@ -139,6 +140,8 @@ class PalettisedPNGSegmentLoader:
         # convert into N binary segmentation masks
         binary_segments = {}
         for i in object_id:
+            if self.used_object_ids is not None and i not in self.used_object_ids:
+                continue
             bs = masks == i
             binary_segments[i] = torch.from_numpy(bs)
 
