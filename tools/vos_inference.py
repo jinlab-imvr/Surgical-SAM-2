@@ -427,7 +427,7 @@ def main():
             p
             for p in os.listdir(args.base_video_dir)
             if os.path.isdir(os.path.join(args.base_video_dir, p))
-               and int(p.split('_')[1]) in [9,10]
+               # and int(p.split('_')[1]) in [9,10]
         ]
     print(f"running VOS prediction on {len(video_names)} videos:\n{video_names}")
 
