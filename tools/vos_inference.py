@@ -433,8 +433,8 @@ def main():
 
     # we first run every object separately and then combine them
     for n_video, video_name in enumerate(video_names):
-        if n_video >= 5:
-            continue
+        # if n_video >= 5:
+        #     continue
         print(f"\n{n_video + 1}/{len(video_names)} - running on {video_name}")
         vos_separate_inference_per_object(
             predictor=predictor,
