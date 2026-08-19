@@ -8,6 +8,11 @@ Official implementation for SurgSAM2, an innovative model that leverages the pow
 >
 > NeurIPS 2024 Workshop AIM-FM
 
+## News
+
+- **SurgSLOT is now available.** Our next-generation surgical video segmentation model, [SurgSLOT: Segment Anything in Surgical Videos via Semantic Long-term Tracking](https://jinlab-imvr.github.io/SurgSLOT/), is now available. Please visit the [project page](https://jinlab-imvr.github.io/SurgSLOT/) and [code repository](https://github.com/jinlab-imvr/SurgSLOT/) for details.
+- **Annotation platform in development.** We are also organizing a dedicated platform for efficient surgical video annotation. A demo is available on the [SurgSLOT project page](https://jinlab-imvr.github.io/SurgSLOT/), demonstrating interactive annotation and accurate instrument segmentation.
+
 ## Overview
 
 We introduce Surgical SAM 2 (SurgSAM-2), an innovative model that leverages the power of the Segment Anything Model 2 (SAM2), integrating it with an efficient frame pruning mechanism for real-time surgical video segmentation. The proposed SurgSAM-2
